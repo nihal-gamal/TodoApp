@@ -10,17 +10,13 @@ import App from './../App';
   
   const Router = () => {
     
-   
     return (
     <Routes>
-        
         <Route path="/" element={<App />}>
-          <Route path="home" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="archived" element={<Archived />} />
           <Route path="wheather" element={<Weather />} />
           <Route path="wheather/:weatherId" element={<Weather />} />
-          
-
         </Route>
     </Routes>
     )

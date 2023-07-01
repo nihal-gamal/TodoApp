@@ -5,6 +5,12 @@ const todoSlice = createSlice({
   initialState: [
     {id:1 ,title:"work",desc:"fgbdfh",archived:"false",checkedAt:"",createdAt:"",finishedAt:""},
     {id:2 ,title:"homeTime",desc:"fgbdfh",archived:"false",checkedAt:"",createdAt:"",finishedAt:""},
+    {id:3 ,title:"homeTime",desc:"fgbdfh",archived:"false",checkedAt:"",createdAt:"",finishedAt:""},
+    
+    {id:4 ,title:"homeTime",desc:"fgbdfh",archived:"false",checkedAt:"",createdAt:"",finishedAt:""},
+    
+    {id:5 ,title:"homeTime",desc:"fgbdfh",archived:"false",checkedAt:"",createdAt:"",finishedAt:""},
+    
     
 
 ],
@@ -13,10 +19,13 @@ const todoSlice = createSlice({
         state.push(action.payload);
       },
     deleteTodo: (state, action) => {
-        const index = state.findIndex((todo) => todo.id === action.payload);
-        if (index !== -1) {
-          state.splice(index, 1);
-        }
+        return state?.filter(todo => todo.id !== action.payload)
+      // console.log("deletedItem",state);
+        // const index = state.find((todo) => todo.id === action.payload);
+        // console.log("index",index);
+        // if (index !== -1) {
+        //   state.splice(index, 1);
+        // }
       },
       editTodo: (state, action) => {
         console.log("state",state);

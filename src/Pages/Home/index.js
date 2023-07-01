@@ -1,10 +1,35 @@
+import {Box, Button, Card, CardActions, CardContent, IconButton, Paper, Typography} from '@material-ui/core';
 import React ,{useState}from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from 'react-router-dom';
 import {addTodo,archiveTodo,deleteTodo, editTodo} from "../../Store/TodoSlice";
-import EditTodoForm from './EditedForm'
+import EditTodoForm from './EditedForm';
+import {  InputBase } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
 
-const Home = () => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    maxWidth: 400,
+    height: '40px',
+    padding: theme.spacing(0, 2),
+    margin: "50px auto",
+  },
+  input: {
+    display:"block",
+    flex: 1,
+    width: '50%',
+    marginLeft: theme.spacing(1),
+  },
+  iconButton: {
+    padding: 10,
+    
+  },
+}));
+
+const Home = ({ placeholder, onSearch }) => {
     const todo = useSelector((state) => state.todo);
     console.log(todo);
     const dispatch = useDispatch();
@@ -15,25 +40,7 @@ const Home = () => {
     const handleEdit = (id) => {
       setEditFormOpen(true);
       setId(id)
-      // dispatch(editTodo({
-      //   ...item,
-      //   text,
-       
-        
-      // }));
-
     };
-    // const open = () => {
-   
-    //   dispatch(editTodo({
-    //     ...item,
-    //     text,
-       
-        
-    //   }));
-    //   onClose();
-    // };
-  
     const handleCloseEditForm = () => {
       setEditFormOpen(false);
     };
@@ -44,35 +51,55 @@ const Home = () => {
         {id:Date.now() ,title:text ,desc:"fgbdfh",archivedAt:"s",checkedAt:"",createdAt:"",finishedAt:""}));
       setText('');
     };
-    // const handleDelete = () => {
-    //   dispatch(deleteTodo(todo?.id));
-    // };
+
+    const classes = useStyles();
   return (
     <div>
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
+      <Paper className={classes.root}>
+      <InputBase
+        className={classes.input}
+        placeholder={placeholder}
+        inputProps={{ 'aria-label': 'search' }}
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Enter todo text"
       />
-      <button type="submit">Add Todo</button>
-    </form>
-
-        {
-            todo?.map(item => <div key={item?.id}>{item?.title}
-                <button onClick={()=>dispatch(deleteTodo(item?.id))}>Delete</button>
-                <button onClick={()=>handleEdit(item.id)}>Edit</button>
-      { editFormOpen && id === item?.id && (
+        <IconButton className={classes.iconButton} aria-label="search" onClick={handleSubmit}>
+        Add Todo
+      </IconButton>
+    </Paper>
+    <Box marginTop="50px"   display="flex" flexWrap="wrap" flexDirection="row" justifyContent="space-evenly" alignItems="center">
+   {todo?.map(item =><Box key={item?.id}  marginTop="50px" > <Card >
+      <CardContent>
+        <Typography variant="h5" component="h2">
+        {item?.title}
+        </Typography>
+        <Typography variant="body2" component="p">
+        {item?.desc}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={()=>dispatch(deleteTodo(item?.id))}>
+          Delete
+        </Button>
+        <Button size="small" onClick={()=>handleEdit(item?.id)}>
+          Edit
+        </Button>
+        { editFormOpen && id === item?.id && (
         <EditTodoForm item={item} onClose={handleCloseEditForm} />
+        
       )}
-      <button onClick={()=>{dispatch(archiveTodo(item.id))
+       <Button size="small" onClick={()=>{dispatch(archiveTodo(item.id))
           navigate('/archived',{state:{item}})
-      }}>Archive</button>
-                </div>
-                )
-        }
+      }}>
+       Archive
+        </Button>
+      </CardActions>
+    </Card>
+   </Box>
+    )}
+     </Box>
     </div>
+    
   )
 }
 
