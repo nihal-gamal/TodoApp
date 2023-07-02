@@ -8,7 +8,7 @@ const Archived = () => {
   console.log("item",item);
   return (
     <div>Archived
-     <p> {item?.title}</p>
+     {location.state? <p> {item?.title}</p>:<p>hello</p>}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import "./weather.css"
 
 function Weather() {
     const api = {
@@ -20,6 +21,7 @@ function Weather() {
   }
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
+  const [forecast, setForecast] = useState([]);
   const search = e => {
     if (e.key === "Enter") {
       fetch(`${api.base}weather?q=${query}&appid=${api.key}&units=metric`)
@@ -31,7 +33,18 @@ function Weather() {
       });
     }
   }
+  // useEffect(() => {
+  //   if (weather.coord) {
+  //     fetch(`${api.base}forecast?lat=${weather.coord.lat}&lon=${weather.coord.lon}&appid=${api.key}&units=metric`)
+  //       .then(res => res.json())
+  //       .then(result => {
+  //         setForecast(result.list);
+  //         console.log("666",result);
+  //       });
+  //   }
+  // }, [weather]);
   return (
+    
     <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
       <main>
         <div className="search-box">
@@ -45,6 +58,7 @@ function Weather() {
           />
         </div>
         {(typeof weather.main != "undefined") ? (
+          <Link to={`${weather?.id}`}>
         <div>
           <div className="location-box">
             <div className="location">{weather.name}, {weather.sys.country}</div>
@@ -56,11 +70,13 @@ function Weather() {
             </div>
             <div className="weather">{weather.weather[0].main}</div>
           </div>
-          <Link to="/weatherId"><button >Current wheater</button></Link>
         </div>
+        </Link>
         ) : ('')}
+        
       </main>
     </div>
+  
   );
 
 }

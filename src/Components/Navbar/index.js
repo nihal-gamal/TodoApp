@@ -27,8 +27,8 @@ const Navbar = () => {
         <Box mx={2} />
 
         <Typography>
-          <Link color="white" to="wheather">
-          wheather
+          <Link color="white" to="weather">
+          weather
           </Link>
         </Typography>
         <Box mx={2} />
